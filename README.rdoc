@@ -9,4 +9,6 @@ This hierarchy is used to share common configuration and to reduce the number of
 
 For example, common dependencies on apache2, php, and mysql cookbooks are defined in the mblwhoi_web_env cookbook.  This cookbook then becomes a dependency for the mblwhoilibrary_web_env cookbook, and the dla_web_env cookbook.  This way, the dependencies are defined in one place (mblwhoi_web_env) rather than in two places (mblwhoilibrary_web_env and dla_web_env).
 
+It is expected that many of the '*_env' recipes would be run w/in the run list of a role, so that specific attributes could be set.
+
 See individual cookbook READMEs for more info.
