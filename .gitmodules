@@ -1,0 +1,15 @@
+[submodule "mblwhoi_capistrano"]
+	path = mblwhoi_capistrano
+	url = git://github.com/adorsk-whoi/mblwhoi_capistrano.git
+[submodule "mblwhoi_drupal"]
+	path = mblwhoi_drupal
+	url = git://github.com/adorsk-whoi/mblwhoi_drupal.git
+[submodule "mblwhoilibrary_drupal_app"]
+	path = mblwhoilibrary_drupal_app
+	url = git://github.com/adorsk-whoi/mblwhoilibrary_drupal_app.git
+[submodule "mblwhoilibrary_web_env"]
+	path = mblwhoilibrary_web_env
+	url = git://github.com/adorsk-whoi/mblwhoilibrary_web_env.git
+[submodule "mblwhoi_web_env"]
+	path = mblwhoi_web_env
+	url = git://github.com/adorsk-whoi/mblwhoi_web_env.git
