@@ -1,0 +1,12 @@
+This repo contains chef resources for MBLWHOI Library projects.
+
+The cookbooks are written with this general hierarchy in mind:
+* mblwhoi (common config for all mblwhoi sites)
+  * mblwhoilibrary (common config for www.mblwhoilibrary.org environment and apps)
+  * dla (common config for dla.whoi.edu environment and apps)
+
+This hierarchy is used to share common configuration and to reduce the number of places where dependencies are defined.
+
+For example, common dependencies on apache2, php, and mysql cookbooks are defined in the mblwhoi_web_env cookbook.  This cookbook then becomes a dependency for the mblwhoilibrary_web_env cookbook, and the dla_web_env cookbook.  This way, the dependencies are defined in one place (mblwhoi_web_env) rather than in two places (mblwhoilibrary_web_env and dla_web_env).
+
+See individual cookbook READMEs for more info.

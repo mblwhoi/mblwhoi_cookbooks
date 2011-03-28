@@ -1,8 +1,0 @@
-This repo contains chef resources for MBLWHOI Library projects.
-
-The cookbooks are written with this general hierarchy in mind:
-* mblwhoi (common config for all mblwhoi sites)
-  * mblwhoilibrary (common config for www.mblwhoilibrary.org environment and apps)
-  * dla (common config for dla.whoi.edu environment and apps)
-
-See individual cookbook READMEs for more info.
