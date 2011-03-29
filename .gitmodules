@@ -13,3 +13,6 @@
 [submodule "mblwhoi_web_env"]
 	path = mblwhoi_web_env
 	url = git://github.com/adorsk-whoi/mblwhoi_web_env.git
+[submodule "dla_web_env"]
+	path = dla_web_env
+	url = git://github.com/adorsk-whoi/dla_web_chef.git
