@@ -16,3 +16,6 @@
 [submodule "dla_web_env"]
 	path = dla_web_env
 	url = git://github.com/adorsk-whoi/dla_web_chef.git
+[submodule "mblwhoi_static_app"]
+	path = mblwhoi_static_app
+	url = git://github.com/adorsk-whoi/mblwhoi_static_app.git
