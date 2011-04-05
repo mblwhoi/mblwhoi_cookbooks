@@ -1,0 +1,21 @@
+= DESCRIPTION:
+
+This cookbook contains:
+
+1. An 'mblwhoi_drupal_app' definition.
+  * This definition sets up a a Drupal app environment consisting of:
+    * a database
+    * a capistrano deployment dir
+    * a symlink to the capistrano deployment dir's 'current' directory
+
+2. An 'mblwhoi_drupal::drush' recipe.
+  * This recipe install drush on the node.
+
+= REQUIREMENTS :
+* mysql cookbook (http://community.opscode.com/cookbooks/mysql)
+* openssl cookbook (http://community.opscode.com/cookbooks/openssl)
+
+= ATTRIBUTES:
+
+= USAGE:
+

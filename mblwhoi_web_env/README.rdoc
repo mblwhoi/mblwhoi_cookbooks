@@ -1,0 +1,18 @@
+= DESCRIPTION:
+
+This cookbook sets up an environment for MBLWHOI web projects.
+
+It primarily includes required recipes, and installs additional php modules.
+
+= REQUIREMENTS:
+
+* php cookbook, v0.99.2 (http://community.opscode.com/cookbooks/php)
+* apache2 cookbook (http://community.opscode.com/cookbooks/apache2)
+* mysql cookbook (http://community.opscode.com/cookbooks/mysql)
+* mblwhoi_capistrano cookbook
+* mblwhoi_drupal cookbook
+
+= ATTRIBUTES:
+
+= USAGE:
+
