@@ -3,6 +3,7 @@
 # Definition:: mblwhoi_static_app
 # 
 # Creates capistrano deployment dir for a static app.
+#TODO move all to capistrano / confirm it's all there already
 
 define :mblwhoi_static_app do
 

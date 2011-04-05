@@ -61,6 +61,11 @@ web_app "#{node[:mblwhoilibrary_web][:server_name]}" do
   server_aliases node[:mblwhoilibrary_web][:server_aliases]
 end
 
+# Disable apache default site.
+apache_site "default" do
+  enable false
+end
+
 # Create mblwhoilibrary drupal app environment
 mblwhoi_drupal_app :mblwhoilibrary do
   capistrano_user "#{node[:mblwhoilibrary_web][:capistrano][:user][:username]}"

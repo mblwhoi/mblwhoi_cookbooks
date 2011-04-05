@@ -3,6 +3,7 @@
 # Definition:: mblwhoi_drupal_app
 # 
 # Creates db, drupal folders, drupal settings.php file, and capistrano deployment dir for a drupal app.
+#TODO move to capistrano
 
 define :mblwhoi_drupal_app do
 
