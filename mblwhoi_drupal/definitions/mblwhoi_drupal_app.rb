@@ -17,42 +17,51 @@ define :mblwhoi_drupal_app do
   Gem.clear_paths
   require 'mysql'
   
-  # Get the application name.
+  # Params.  We list them here to make them explicit
+  # and to make shortcut handles.
   app_name = params[:name]
-
-  # Get the capistrano user name.
-  capistrano_user = params[:capistrano_user]
-
-  # Get the app dir.
   app_dir = params[:app_dir]
-
-  # Get the symlink path.
   symlink = params[:symlink]
-  
+  app_owner = params[:app_owner]
+  app_group = params[:app_group]
+  app_repo = params[:app_repo]
+  app_branch = params[:app_branch]
+
   # Set the name of the database to create
   # We truncate this to 16 characters to avoid mysql errors.
-  db_name = "#{app_name}".slice(0..15)
+  db_name = params.fetch('db_name', app_name)
+  db_name = "#{db_name}".slice(0..15)
 
   # Set the name of the db user to create
   # We truncate this to 16 characters to avoid mysql errors.
-  db_user = "#{app_name}".slice(0..15)
+  db_name = params.fetch('db_user', app_name)
+  db_user = "#{db_user}".slice(0..15)
 
   # Create a random password for the db user
   # Note: secure_password comes from Opscode:OpenSSL::Password
-  db_pass = secure_password 
+  db_pass = params.fetch('db_pass', secure_password)
 
-  # Create app dir from static app definition.
-  mblwhoi_static_app "#{app_dir}" do
-    capistrano_user capistrano_user
-    app_dir app_dir
-    symlink symlink
+  # Create deploy_dir for the app, if it does not already exist.
+  directory "#{app_dir}" do
+    mode "0775"
+    owner app_owner
+    group app_group
+    action :create
+  end
+
+  # Create shared resources dir
+  directory "#{app_dir}/shared" do
+    mode "0775"
+    owner app_owner
+    group app_group
+    action :create
   end
 
   # Create sites dir within the shared resources dir.
   directory "#{app_dir}/shared/sites" do
     mode "0775"
-    owner capistrano_user
-    group "#{node[:apache][:user]}"
+    owner app_owner
+    group app_group
     action :create
   end
 
@@ -64,7 +73,6 @@ define :mblwhoi_drupal_app do
     action :create
   end
 
-
   # Create sites/default/files within the shared resources dir.
   directory "#{app_dir}/shared/sites/default/files" do
     mode "0775"
@@ -73,29 +81,23 @@ define :mblwhoi_drupal_app do
     action :create
   end
 
-  # Define log message to display after the environment has been created.
-  log "Drupal environment has been created.  Deploy drupal site to #{app_dir}." do
-    action :nothing
-  end
 
-
-  # Create settings.php file if it does not exist.
+  # Create settings.php file.
   # Will be triggered by db creation resource below.
   template "create settings.php" do
     path "#{app_dir}/shared/sites/default/settings.php"
     source "settings.php.erb"
     mode "0750"
-    owner capistrano_user
-    group "#{node[:apache][:user]}"
+    owner app_owner
+    group app_group
     cookbook "mblwhoi_drupal"
     variables(
               :database => db_name,
               :user => db_user,
               :password => db_pass
               )
-    notifies :write, resources(:log => "Drupal environment has been created.  Deploy drupal site to #{app_dir}.")
-    not_if "test -e #{app_dir}/shared/sites/default/settings.php"
   end
+
 
   # Create mysql user and grant permissions.
   # This is triggered by the db creation execute resource below.
@@ -123,9 +125,23 @@ define :mblwhoi_drupal_app do
     end
   end
 
+
+  # Deploy app to app dir.
+  deploy "deploy #{app_name}" do
+    deploy_to app_dir
+    repo "#{app_repo}"
+    branch "#{app_branch}"
+    enable_submodules true
+    action :deploy
+    migrate false
+    create_dirs_before_symlink  %w{tmp public config deploy}
+    symlink_before_migrate  "sites/default" => "sites/default"
+    symlinks ({})
+  end
+
   # Create hourly cron job.
   cron "drupal hourly cron" do
-    command "cd #{app_dir}/current; /usr/bin/php cron.php"
+    command "cd #{symlink}; /usr/bin/php cron.php"
     minute "0"
   end
 
