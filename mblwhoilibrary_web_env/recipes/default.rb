@@ -2,76 +2,52 @@
 # Cookbook Name:: mblwhoilibrary_web_env
 # Recipe:: default
 #
-# Main setup recipe for MBLWHOI Library Website environment.
+# Main setup recipe for mblwhoilibrary.org website environment.
 
-# Include recipe dependencies.
-# Dependencies will include sub-dependencies in turn.
-include_recipe %w{mblwhoi_drupal mblwhoi_capistrano}
+# Include dependencies.
+include_recipe %w{mblwhoi_drupal_app mblwhoi_static_app}
 
-# Raise error if no capistrano attribute is present.
-if ( 
-    ! node.attribute?("mblwhoilibrary_web") ||
-    ! node.mblwhoilibrary_web.attribute?("capistrano") ||
-    ! node.mblwhoilibrary_web.capistrano.attribute?("user") ||
-    ! node.mblwhoilibrary_web.capistrano.user.attribute?("username")
-    )
-
-  raise "No mblwhoilibrary_web[:capistrano] attributes.  At least mblwhoilibrary_web[:capistrano][:user][:username] must be set."
-end
-
-
-# Save capistrano config.
-cap_config = node[:mblwhoilibrary_web][:capistrano].to_hash
-
-# If secondary groups were not defined in capistrano config, set to the apache user.
-cap_config["user"]["secondary_groups"] = cap_config["user"]["secondary_groups"] ? cap_config["user"]["secondary_groups"] : [ node[:apache][:user] ]
-
-# Create a user to use for capistrano deployments.
-mblwhoi_capistrano_user "create mblwhoi capistrano user" do
-  user cap_config["user"]
-end
-
-# Enable apache modules.
-apache_module "rewrite" do
-end
-
-# Create web dir.
-directory "web_dir" do
-  path "#{node[:mblwhoilibrary_web][:web_dir]}"
+# Make dla root dir.
+directory "mblwhoilibrary root dir" do
+  path node[:mblwhoilibrary_webserver][:root_dir]
+  mode "0755"
+  owner node[:mblwhoilibrary_webserver][:app_owner]
+  owner node[:mblwhoilibrary_webserver][:app_owner]
+  recursive true
   action :create
-  mode 0755
-  owner "root"
-  group "root"
 end
 
-# Create apps dir.
-directory "apps dir" do
-  path "#{node[:mblwhoilibrary_web][:apps_dir]}"
+
+# Note: we do not make a docroot dir for the mblwhoilibrary site.  The mblwhoilibrary drupal app becomes the docroot.
+
+# Make apps dir.
+directory "mblwhoilibrary apps dir" do
+  path node[:mblwhoilibrary_webserver][:apps_dir]
+  mode "0755"
+  owner node[:mblwhoilibrary_webserver][:app_owner]
+  owner node[:mblwhoilibrary_webserver][:app_group]
   action :create
-  mode 0755
-  owner "root"
-  group "root"
 end
 
-# Make apache config file.
-web_app "#{node[:mblwhoilibrary_web][:server_name]}" do
+
+# Make apache config.
+web_app "#{node[:mblwhoilibrary_webserver][:server_name]}" do
   template "mblwhoilibrary_web.conf.erb"
-  docroot node[:mblwhoilibrary_web][:docroot]
-  server_name node[:mblwhoilibrary_web][:server_name]
-  server_aliases node[:mblwhoilibrary_web][:server_aliases]
+  docroot node[:mblwhoilibrary_webserver][:docroot_dir]
+  server_name node[:mblwhoilibrary_webserver][:server_name]
+  server_aliases node[:mblwhoilibrary_webserver][:server_aliases] || [node[:mblwhoilibrary_webserver][:server_name]]
 end
 
-# Disable apache default site.
-apache_site "default" do
-  enable false
+
+# Create the mblwhoilibrary drupal app.  Note that we symlink this to the docrootdir.
+app_id = "mblwhoilibrary"
+mblwhoi_drupal_app "mblwhoilibrary drupal app" do
+  app_name "#{app_id}"
+  app_dir "#{node[:mblwhoilibrary_webserver][:apps_dir]}/%s" % app_id
+  symlink "#{node[:mblwhoilibrary_webserver][:docroot_dir]}" 
+  app_owner "#{node[:mblwhoilibrary_webserver][:app_owner]}"
+  app_group "#{node[:mblwhoilibrary_webserver][:app_group]}"
+  app_repo "git://github.com/adorsk-whoi/dla_cruises.git" # REPLACE THIS! JUST A STAND IN FOR NOW
+  app_branch "master"
 end
 
-# Create mblwhoilibrary drupal app environment
-mblwhoi_drupal_app :mblwhoilibrary do
-  capistrano_user "#{node[:mblwhoilibrary_web][:capistrano][:user][:username]}"
-  app_dir "#{node[:mblwhoilibrary_web][:apps_dir]}/mblwhoilibrary"
-  symlink "#{node[:mblwhoilibrary_web][:docroot]}"
-end
-
-# Install drush
-include_recipe "mblwhoi_drupal::drush"

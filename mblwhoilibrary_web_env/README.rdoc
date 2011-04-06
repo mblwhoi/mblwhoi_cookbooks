@@ -1,12 +1,8 @@
 = DESCRIPTION:
 
-This cookbook sets up an environment for the www.mblwhoilibrary.org website and its related applications.
-
-As of 2011-03-28, there is only one related application, the www.mblwhoilibrary.org drupal site.
+This cookbook sets up an environment for the mblwhoilibrary.org website and its related applications.
 
 = REQUIREMENTS:
-
-*mblwhoi_web_env cookbook
 
 = ATTRIBUTES:
 
