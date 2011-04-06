@@ -32,7 +32,7 @@ define :mblwhoi_static_app do
   end
 
   # Deploy app to app dir.
-  deploy "deploy #{app_name}" do
+  deploy_revision "deploy #{app_name}" do
     deploy_to app_dir
     user app_owner
     group app_group

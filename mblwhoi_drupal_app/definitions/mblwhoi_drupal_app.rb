@@ -125,7 +125,7 @@ define :mblwhoi_drupal_app do
 
 
   # Deploy app to app dir.
-  deploy "deploy #{app_name}" do
+  deploy_revision "deploy #{app_name}" do
     deploy_to app_dir
     user app_owner
     group app_group
@@ -151,7 +151,7 @@ define :mblwhoi_drupal_app do
   end
 
   # Create hourly cron job.
-  cron "drupal hourly cron" do
+  cron "drupal cron for #{app_dir}" do
     command "cd #{symlink}; /usr/bin/php cron.php"
     minute "0"
   end
