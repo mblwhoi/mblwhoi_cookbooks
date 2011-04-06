@@ -3,12 +3,11 @@
 # Definition:: mblwhoi_drupal_app
 # 
 # Creates db, drupal folders, drupal settings.php file, and capistrano deployment dir for a drupal app.
-#TODO move to capistrano
 
 define :mblwhoi_drupal_app do
 
   # Include dependencies.
-  include_recipe %w{mysql mysql::server openssl mblwhoi_static_app}
+  include_recipe %w{mysql mysql::server openssl}
 
   class Chef::Recipe
     include Opscode::OpenSSL::Password
@@ -19,7 +18,7 @@ define :mblwhoi_drupal_app do
   
   # Params.  We list them here to make them explicit
   # and to make shortcut handles.
-  app_name = params[:name]
+  app_name = params[:app_name] || params[:name]
   app_dir = params[:app_dir]
   symlink = params[:symlink]
   app_owner = params[:app_owner]
@@ -27,15 +26,14 @@ define :mblwhoi_drupal_app do
   app_repo = params[:app_repo]
   app_branch = params[:app_branch]
 
-  # Set the name of the database to create
+  # Set the name of the database to create.
+  # Same as app name by default.
   # We truncate this to 16 characters to avoid mysql errors.
   db_name = params.fetch('db_name', app_name)
   db_name = "#{db_name}".slice(0..15)
 
-  # Set the name of the db user to create
-  # We truncate this to 16 characters to avoid mysql errors.
-  db_name = params.fetch('db_user', app_name)
-  db_user = "#{db_user}".slice(0..15)
+  # Set the name of the db user to create (same as db by default)
+  db_user = params.fetch('db_user', db_name)
 
   # Create a random password for the db user
   # Note: secure_password comes from Opscode:OpenSSL::Password
@@ -68,16 +66,16 @@ define :mblwhoi_drupal_app do
   # Create sites/default
   directory "#{app_dir}/shared/sites/default" do
     mode "0755"
-    owner capistrano_user
-    group "#{node[:apache][:user]}"
+    owner app_owner
+    group app_group
     action :create
   end
 
   # Create sites/default/files within the shared resources dir.
   directory "#{app_dir}/shared/sites/default/files" do
     mode "0775"
-    owner capistrano_user
-    group "#{node[:apache][:user]}"
+    owner app_owner
+    group app_group
     action :create
   end
 
@@ -96,6 +94,7 @@ define :mblwhoi_drupal_app do
               :user => db_user,
               :password => db_pass
               )
+    action :nothing
   end
 
 
@@ -129,14 +128,26 @@ define :mblwhoi_drupal_app do
   # Deploy app to app dir.
   deploy "deploy #{app_name}" do
     deploy_to app_dir
+    user app_owner
+    group app_group
     repo "#{app_repo}"
     branch "#{app_branch}"
     enable_submodules true
+    shallow_clone true
     action :deploy
     migrate false
     create_dirs_before_symlink  %w{tmp public config deploy}
     symlink_before_migrate  "sites/default" => "sites/default"
     symlinks ({})
+
+    # before_restart callback
+    before_restart do
+      
+      # Make symlink from current/drupal_root to the htdocs dir
+      execute "symlink to drupal root" do
+        command "ln -nsf #{release_path}/drupal_root #{symlink}"
+      end
+    end
   end
 
   # Create hourly cron job.
