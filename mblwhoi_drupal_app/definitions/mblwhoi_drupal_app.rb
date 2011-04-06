@@ -1,8 +1,7 @@
 #
-# Cookbook Name:: mblwhoi_drupal
+# Cookbook Name:: mblwhoi_drupal_app
 # Definition:: mblwhoi_drupal_app
 # 
-# Creates db, drupal folders, drupal settings.php file, and capistrano deployment dir for a drupal app.
 
 define :mblwhoi_drupal_app do
 
@@ -136,14 +135,15 @@ define :mblwhoi_drupal_app do
     shallow_clone true
     action :deploy
     migrate false
-    create_dirs_before_symlink  %w{tmp public config deploy}
+    create_dirs_before_symlink ([])
+    purge_before_symlink ([])
     symlink_before_migrate  "sites/default" => "sites/default"
     symlinks ({})
 
     # before_restart callback
     before_restart do
       
-      # Make symlink from current/drupal_root to the htdocs dir
+      # Make symlink from current/drupal_root
       execute "symlink to drupal root" do
         command "ln -nsf #{release_path}/drupal_root #{symlink}"
       end

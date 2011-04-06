@@ -1,0 +1,21 @@
+= DESCRIPTION:
+
+This cookbook contains:
+
+1. An 'mblwhoi_drupal_app' definition.
+  * This definition sets up a a Drupal app by doing the following tasks:
+    * creating a database for the app
+    * creating a deployment dir for the app
+    * pulling the app's files from source control
+    * making symlink to the app's 'current/drupal_root' directory
+
+NOTE: This only deploys the source code for the app.  It does NOT seed the app's db.  Db tasks must be done through other means.
+
+= REQUIREMENTS :
+* mysql cookbook (http://community.opscode.com/cookbooks/mysql)
+* openssl cookbook (http://community.opscode.com/cookbooks/openssl)
+
+= ATTRIBUTES:
+
+= USAGE:
+
