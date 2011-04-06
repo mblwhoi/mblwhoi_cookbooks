@@ -1,0 +1,35 @@
+{
+  "name": "mblwhoi_drupal_app",
+  "description": "Definitions for MBLWHOI Drupal Apps",
+  "long_description": "= DESCRIPTION:\n\nThis cookbook contains:\n\n1. An 'mblwhoi_drupal_app' definition.\n  * This definition sets up a a Drupal app by doing the following tasks:\n    * creating a database for the app\n    * creating a deployment dir for the app\n    * pulling the app's files from source control\n    * making symlink to the app's 'current/drupal_root' directory\n\nNOTE: This only deploys the source code for the app.  It does NOT seed the app's db.  Db tasks must be done through other means.\n\n= REQUIREMENTS :\n* mysql cookbook (http://community.opscode.com/cookbooks/mysql)\n* openssl cookbook (http://community.opscode.com/cookbooks/openssl)\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
+  "maintainer": "adorsk-whoi",
+  "maintainer_email": "adorsk@whoi.edu",
+  "license": "All rights reserved",
+  "platforms": {
+  },
+  "dependencies": {
+    "mysql": [
+
+    ],
+    "openssl": [
+
+    ]
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+  },
+  "version": "0.0.1"
+}

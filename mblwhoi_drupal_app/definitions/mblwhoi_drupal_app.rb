@@ -87,7 +87,7 @@ define :mblwhoi_drupal_app do
     mode "0750"
     owner app_owner
     group app_group
-    cookbook "mblwhoi_drupal"
+    cookbook "mblwhoi_drupal_app"
     variables(
               :database => db_name,
               :user => db_user,
