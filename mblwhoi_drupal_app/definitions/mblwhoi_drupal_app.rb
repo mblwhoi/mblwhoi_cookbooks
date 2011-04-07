@@ -137,7 +137,7 @@ define :mblwhoi_drupal_app do
     migrate false
     create_dirs_before_symlink ([])
     purge_before_symlink ([])
-    symlink_before_migrate  "sites/default" => "sites/default"
+    symlink_before_migrate ({"sites/default" => "sites"})
     symlinks ({})
 
     # before_restart callback
