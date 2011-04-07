@@ -32,7 +32,7 @@ end
 
 # Make apache config.
 web_app "#{node[:mblwhoi_library_webserver][:server_name]}" do
-  template "mblwhoi library_web.conf.erb"
+  template "mblwhoi_library_web.conf.erb"
   docroot node[:mblwhoi_library_webserver][:docroot_dir]
   server_name node[:mblwhoi_library_webserver][:server_name]
   server_aliases node[:mblwhoi_library_webserver][:server_aliases] || [node[:mblwhoi_library_webserver][:server_name]]
