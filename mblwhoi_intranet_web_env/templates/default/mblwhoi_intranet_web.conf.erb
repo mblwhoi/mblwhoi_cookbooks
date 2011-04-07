@@ -20,4 +20,17 @@
   ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
   CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
 
+
+  # mod_rewrite section.
+  <IfModule mod_rewrite.c>
+  
+    # Enable rewrite.
+    RewriteEngine On
+
+    # Rewrite pathless requests to /intranet
+    RewriteRule        ^/?$        /intranet [R=301]
+    
+  </IfModule>
+
+
 </VirtualHost>
