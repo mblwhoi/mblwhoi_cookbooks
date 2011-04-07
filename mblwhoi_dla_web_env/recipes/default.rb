@@ -57,7 +57,7 @@ node[:mblwhoi_dla_webserver][:drupal_apps].each do |app_id, app_config|
     app_owner "#{node[:mblwhoi_dla_webserver][:app_owner]}"
     app_group "#{node[:mblwhoi_dla_webserver][:app_group]}"
     app_repo "#{app_config[:repo]}"
-    app_branch "%s" % [app_config[:branch] || "master"]
+    app_branch "%s" % [app_config[:branch] || node[:mblwhoi_dla_webserver][:default_branch] || "master"]
   end
 
 end
