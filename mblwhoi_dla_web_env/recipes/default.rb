@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: dla_web_env
+# Cookbook Name:: mblwhoi_dla_web_env
 # Recipe:: default
 #
-# Main setup recipe for dla.whoi.edu website environment.
+# Main setup recipe for the DLA website environment.
 
 # Include dependencies.
 include_recipe %w{mblwhoi_drupal_app mblwhoi_static_app}
