@@ -1,0 +1,10 @@
+= DESCRIPTION:
+
+This cookbook sets up an environment for the dla.whoi.edu website and its related applications.
+
+= REQUIREMENTS:
+
+= ATTRIBUTES:
+
+= USAGE:
+

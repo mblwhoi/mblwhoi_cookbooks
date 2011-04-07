@@ -1,0 +1,38 @@
+{
+  "name": "dla_web_env",
+  "description": "Installs/Configures environment for WHOI DLA website.",
+  "long_description": "= DESCRIPTION:\n\nThis cookbook sets up an environment for the dla.whoi.edu website and its related applications.\n\n= REQUIREMENTS:\n\n*mblwhoi_web_env cookbook\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
+  "maintainer": "adorsk-whoi",
+  "maintainer_email": "adorsk@whoi.edu",
+  "license": "All rights reserved",
+  "platforms": {
+  },
+  "dependencies": {
+    "mblwhoi_drupal_app": [
+
+    ],
+    "mblwhoi_static_app": [
+
+    ],
+    "apache2": [
+
+    ]
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+  },
+  "version": "0.0.1"
+}
