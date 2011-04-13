@@ -1,0 +1,10 @@
+= DESCRIPTION:
+
+This cookbook sets up an environment for the legacy.mblwhoilibrary.org website and its related applications.
+
+= REQUIREMENTS:
+
+= ATTRIBUTES:
+
+= USAGE:
+
