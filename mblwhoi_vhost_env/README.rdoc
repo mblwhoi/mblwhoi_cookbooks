@@ -1,0 +1,10 @@
+= DESCRIPTION:
+
+This cookbook provides a definition for an MBLWHOI virtual host.
+
+= REQUIREMENTS:
+
+= ATTRIBUTES:
+
+= USAGE:
+
