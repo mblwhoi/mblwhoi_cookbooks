@@ -3,16 +3,18 @@
 # Recipe:: default
 #
 # Main setup recipe for mblwhoi library website environment.
+#
+# We don't use the default mblwhoi vhost env definition because the library website has a slightly different configuration; it has no docroot dir.
 
 # Include dependencies.
-include_recipe %w{mblwhoi_drupal_app mblwhoi_static_app}
+include_recipe %w{mblwhoi_drupal_app mblwhoi_static_app apache2}
 
-# Make dla root dir.
+# Make root dir.
 directory "mblwhoi library root dir" do
   path node[:mblwhoi_library_webserver][:root_dir]
-  mode "0755"
+  mode "0775"
   owner node[:mblwhoi_library_webserver][:app_owner]
-  owner node[:mblwhoi_library_webserver][:app_owner]
+  group node[:mblwhoi_library_webserver][:app_group]
   recursive true
   action :create
 end
@@ -23,7 +25,7 @@ end
 # Make apps dir.
 directory "mblwhoi library apps dir" do
   path node[:mblwhoi_library_webserver][:apps_dir]
-  mode "0755"
+  mode "0775"
   owner node[:mblwhoi_library_webserver][:app_owner]
   owner node[:mblwhoi_library_webserver][:app_group]
   action :create
