@@ -46,6 +46,14 @@ define :mblwhoi_drupal_app do
     action :create
   end
 
+  # Create app's symlink.
+  link "#{symlink} symlink" do
+    target_file symlink
+    to "#{app_dir}/current"
+    owner app_owner
+    group app_group
+  end
+
   # Create shared resources dir
   directory "#{app_dir}/shared" do
     mode "0775"
@@ -120,33 +128,6 @@ define :mblwhoi_drupal_app do
     not_if do
       m = Mysql.new("localhost", "root", node[:mysql][:server_root_password])
       m.list_dbs.include?("#{db_name}") # Note: have to convert symbol to string for proper comparison here.
-    end
-  end
-
-
-  # Deploy app to app dir.
-  deploy_revision "deploy #{app_name}" do
-    deploy_to app_dir
-    user app_owner
-    group app_group
-    repo "#{app_repo}"
-    branch "#{app_branch}"
-    enable_submodules true
-    shallow_clone true
-    action :deploy
-    migrate false
-    create_dirs_before_symlink ([])
-    purge_before_symlink ([])
-    symlink_before_migrate ({"sites/default" => "sites"})
-    symlinks ({})
-
-    # before_restart callback
-    before_restart do
-      
-      # Make symlink from current/drupal_root
-      execute "symlink to drupal root" do
-        command "ln -nsf #{release_path}/drupal_root #{symlink}"
-      end
     end
   end
 

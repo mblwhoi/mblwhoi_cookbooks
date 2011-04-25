@@ -31,30 +31,12 @@ define :mblwhoi_static_app do
     action :create
   end
 
-  # Deploy app to app dir.
-  deploy_revision "deploy #{app_name}" do
-    deploy_to app_dir
-    user app_owner
+  # Create app's symlink.
+  link "#{symlink} symlink" do
+    target_file symlink
+    to "#{app_dir}/current"
+    owner app_owner
     group app_group
-    repo "#{app_repo}"
-    branch "#{app_branch}"
-    enable_submodules true
-    shallow_clone true
-    action :deploy
-    migrate false
-    purge_before_symlink ([])
-    create_dirs_before_symlink ([])
-    symlink_before_migrate ({})
-    symlinks ({})
-
-    # before_restart callback
-    before_restart do
-      
-      # Make symlink from current
-      execute "symlink to current" do
-        command "ln -nsf #{release_path} #{symlink}"
-      end
-    end
   end
 
 end
