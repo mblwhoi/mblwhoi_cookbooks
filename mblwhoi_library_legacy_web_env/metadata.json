@@ -1,20 +1,14 @@
 {
-  "name": "mblwhoilibrary_web_env",
-  "description": "Installs/Configures environment for MBLWHOI Library website.",
-  "long_description": "= DESCRIPTION:\n\nThis cookbook sets up an environment for the mblwhoilibrary.org website and its related applications.\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
+  "name": "mblwhoi_library_legacy_web_env",
+  "description": "Installs/Configures environment for MBLWHOI Library Legacy website.",
+  "long_description": "= DESCRIPTION:\n\nThis cookbook sets up an environment for the legacy.mblwhoilibrary.org website and its related applications.\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
   "maintainer": "adorsk-whoi",
   "maintainer_email": "adorsk@whoi.edu",
   "license": "All rights reserved",
   "platforms": {
   },
   "dependencies": {
-    "mblwhoi_drupal_app": [
-
-    ],
-    "mblwhoi_static_app": [
-
-    ],
-    "apache2": [
+    "mblwhoi_vhost_env": [
 
     ]
   },
