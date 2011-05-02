@@ -135,7 +135,7 @@ define :mblwhoi_drupal_app do
   cron "drupal cron for #{app_dir}" do
     command "cd #{symlink}; /usr/bin/php cron.php"
     minute "0"
-    user node[:mblwhoi_dla_webserver][:app_owner]
+    user app_owner
   end
 
 end
