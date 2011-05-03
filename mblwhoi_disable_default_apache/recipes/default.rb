@@ -8,6 +8,6 @@
 # Include dependencies.
 include_recipe %w{apache2}
 
-apache_site "default" do
+apache_site "000-default" do
   enable false
 end
