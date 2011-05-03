@@ -46,14 +46,6 @@ define :mblwhoi_drupal_app do
     action :create
   end
 
-  # Create app's symlink.
-  link "#{symlink} symlink" do
-    target_file symlink
-    to "#{app_dir}/current"
-    owner app_owner
-    group app_group
-  end
-
   # Create shared resources dir
   directory "#{app_dir}/shared" do
     mode "0775"
