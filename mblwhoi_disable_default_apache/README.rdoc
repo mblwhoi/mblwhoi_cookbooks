@@ -1,0 +1,10 @@
+= DESCRIPTION:
+
+This cookbook disables the default apache site.  Sometimes the default site can cause conflicts with virtual host aliases.
+
+= REQUIREMENTS:
+
+= ATTRIBUTES:
+
+= USAGE:
+
