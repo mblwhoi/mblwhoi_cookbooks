@@ -31,14 +31,6 @@ define :mblwhoi_static_app do
     action :create
   end
 
-  # Create app's symlink.
-  link "#{symlink} symlink" do
-    target_file symlink
-    to "#{app_dir}/current"
-    owner app_owner
-    group app_group
-  end
-
 end
 
 
