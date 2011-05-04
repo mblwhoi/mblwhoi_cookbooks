@@ -19,7 +19,6 @@ define :mblwhoi_drupal_app do
   # and to make shortcut handles.
   app_name = params[:app_name] || params[:name]
   app_dir = params[:app_dir]
-  symlink = params[:symlink]
   app_owner = params[:app_owner]
   app_group = params[:app_group]
   app_repo = params[:app_repo]
@@ -125,7 +124,7 @@ define :mblwhoi_drupal_app do
 
   # Create hourly cron job.
   cron "drupal cron for #{app_dir}" do
-    command "cd #{symlink}; /usr/bin/php cron.php"
+    command "cd #{app_dir}/current/drupal_root; drush cron.php"
     minute "0"
     user app_owner
   end
