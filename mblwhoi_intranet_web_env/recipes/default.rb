@@ -19,7 +19,6 @@ mblwhoi_vhost_env "intranet vhost" do
   server_name node[:mblwhoi_intranet_webserver][:server_name]
   use_default_apache_config false # don't use the default apache config
   drupal_apps node[:mblwhoi_intranet_webserver][:drupal_apps]
-  static_apps node[:mblwhoi_intranet_webserver][:static_apps]
 end
 
 # Make apache config.

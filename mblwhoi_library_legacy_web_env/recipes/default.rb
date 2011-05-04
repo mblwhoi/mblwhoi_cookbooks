@@ -5,10 +5,7 @@
 # Main setup recipe for mblwhoi library website environment.
 
 # Include dependencies.
-include_recipe %w{mblwhoi_drupal_app mblwhoi_static_app}
-
-# Include dependencies.
-include_recipe %w{mblwhoi_vhost_env apache2}
+include_recipe %w{mblwhoi_vhost_env}
 
 # Setup library_legacy vhost environment via the mblwhoi_vhost_env definition.
 # Make library_legacy root dir.
@@ -19,6 +16,5 @@ mblwhoi_vhost_env "library_legacy vhost" do
   server_name node[:mblwhoi_library_legacy_webserver][:server_name]
   use_default_apache_config true # use the default apache config
   drupal_apps node[:mblwhoi_library_legacy_webserver][:drupal_apps]
-  static_apps node[:mblwhoi_library_legacy_webserver][:static_apps]
 end
 

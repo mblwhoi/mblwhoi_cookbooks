@@ -20,7 +20,6 @@ mblwhoi_vhost_env "dla vhost" do
   server_name node[:mblwhoi_dla_webserver][:server_name]
   use_default_apache_config false # don't use the default apache config
   drupal_apps node[:mblwhoi_dla_webserver][:drupal_apps]
-  static_apps node[:mblwhoi_dla_webserver][:static_apps]
 end
 
 # Make apache config.

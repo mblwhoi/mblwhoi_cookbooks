@@ -21,8 +21,6 @@ define :mblwhoi_drupal_app do
   app_dir = params[:app_dir]
   app_owner = params[:app_owner]
   app_group = params[:app_group]
-  app_repo = params[:app_repo]
-  app_branch = params[:app_branch]
 
   # Set the name of the database to create.
   # Same as app name by default.
@@ -122,7 +120,7 @@ define :mblwhoi_drupal_app do
     end
   end
 
-  # Create hourly cron job.
+  # Create hourly cron job to run drush cron as the app owner.
   cron "drupal cron for #{app_dir}" do
     command "cd #{app_dir}/current/drupal_root; drush cron.php"
     minute "0"

@@ -7,7 +7,7 @@
 # We don't use the default mblwhoi vhost env definition because the library website has a slightly different configuration; it has no docroot dir.
 
 # Include dependencies.
-include_recipe %w{mblwhoi_drupal_app mblwhoi_static_app apache2}
+include_recipe %w{mblwhoi_drupal_app apache2}
 
 # Make root dir.
 directory "mblwhoi library root dir" do
@@ -42,15 +42,11 @@ end
 
 
 # Create the mblwhoi library drupal app.  
-# Note that we symlink this to the docrootdir.
 app_id = "mblwhoi_library_home"
 mblwhoi_drupal_app "mblwhoi library drupal app" do
   app_name "#{app_id}"
   app_dir "#{node[:mblwhoi_library_webserver][:apps_dir]}/%s" % app_id
-  symlink "#{node[:mblwhoi_library_webserver][:docroot_dir]}" 
   app_owner "#{node[:mblwhoi_library_webserver][:app_owner]}"
   app_group "#{node[:mblwhoi_library_webserver][:app_group]}"
-  app_repo "#{node[:mblwhoi_library_webserver][:drupal_apps][:mblwhoi_library_home][:repo]}"
-  app_branch "#{node[:mblwhoi_library_webserver][:drupal_apps][:mblwhoi_library_home][:branch]}" || "master"
 end
 

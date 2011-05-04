@@ -6,7 +6,7 @@
 define :mblwhoi_vhost_env do
 
   # Include dependencies.
-  include_recipe %w{mblwhoi_drupal_app mblwhoi_static_app apache2}
+  include_recipe %w{mblwhoi_drupal_app apache2}
   
   # Params.  We list them here to make them explicit
   # and to make shortcut handles.
@@ -20,9 +20,7 @@ define :mblwhoi_vhost_env do
   apps_dir = params[:apps_dir] || "#{root_dir}/apps"
   use_default_apache_config = params[:use_default_apache_config] || true
   server_aliases = params[:server_aliases] || [server_name]
-  default_branch = params[:default_branch]
   drupal_apps = params[:drupal_apps] || []
-  static_apps = params[:static_apps] || []
 
   # Make root dir.
   directory "vhost root dir" do
@@ -72,30 +70,10 @@ define :mblwhoi_vhost_env do
     mblwhoi_drupal_app "drupal app #{app_id}" do
       app_name "%s" % app_config.fetch("app_name", app_id)
       app_dir "#{apps_dir}/%s" % app_config.fetch("app_dir", app_id)
-      symlink "#{docroot_dir}/%s" % app_config.fetch("symlink_name", app_id)
       app_owner app_owner
       app_group app_group
-      app_repo "#{app_config[:repo]}"
-      app_branch "%s" % [app_config[:branch] || default_branch || "master"]
     end
 
-  end
-
-
-  # For each static app...
-  static_apps.each do |app_id, app_config|
-    
-    # Create static app environment for the app. (deploy dir, code)
-    mblwhoi_static_app "static app #{app_id}" do
-      app_name "%s" % app_config.fetch("app_name", app_id)
-      app_dir "#{apps_dir}/%s" % app_config.fetch("app_dir", app_id)
-      symlink "#{docroot_dir}/%s" % app_config.fetch("symlink_name", app_id)
-      app_owner app_owner
-      app_group app_group
-      app_repo "#{app_config[:repo]}"
-      app_branch "%s" % [app_config[:branch] || default_branch || "master"]
-    end
-    
   end
 
 end
