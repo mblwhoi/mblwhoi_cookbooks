@@ -122,7 +122,7 @@ define :mblwhoi_drupal_app do
 
   # Create hourly cron job to run drush cron as the app owner.
   cron "drupal cron for #{app_dir}" do
-    command "cd #{app_dir}/current/drupal_root; drush cron.php"
+    command "cd #{app_dir}/current/drupal_root; drush cron"
     minute "0"
     user app_owner
   end
