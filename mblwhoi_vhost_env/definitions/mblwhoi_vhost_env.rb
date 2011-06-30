@@ -18,7 +18,7 @@ define :mblwhoi_vhost_env do
   # Optional parameters.
   docroot_dir = params[:docroot_dir] || "#{root_dir}/htdocs"
   apps_dir = params[:apps_dir] || "#{root_dir}/apps"
-  use_default_apache_config = params[:use_default_apache_config] || true
+  use_default_apache_config = ! params[:use_default_apache_config].nil? ? params[:use_default_apache_config] : true
   server_aliases = params[:server_aliases] || [server_name]
   drupal_apps = params[:drupal_apps] || []
 
@@ -50,16 +50,14 @@ define :mblwhoi_vhost_env do
     action :create
   end
 
-
   # Make apache config if using default config.
-  web_app "#{server_name}" do
-    template "default_mblwhoi_vhost.conf.erb"
-    cookbook "mblwhoi_vhost_env"
-    docroot docroot_dir
-    server_name server_name
-    server_aliases server_aliases
-    only_if do
-      use_default_apache_config == true
+  if use_default_apache_config
+    web_app "#{server_name}" do
+      template "default_mblwhoi_vhost.conf.erb"
+      cookbook "mblwhoi_vhost_env"
+      docroot docroot_dir
+      server_name server_name
+      server_aliases server_aliases
     end
   end
 
