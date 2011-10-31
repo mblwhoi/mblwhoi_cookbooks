@@ -128,10 +128,6 @@ define :mblwhoi_drupal_app do
     user app_owner
   end
 
-  # Create daily backup job.
-  backup_job "daily backup for #{app_name}" do
-    
-  end
 
   # Define backup tasks.
   file_tasks = {
