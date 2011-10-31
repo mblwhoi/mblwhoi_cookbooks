@@ -6,7 +6,7 @@
 define :mblwhoi_drupal_app do
 
   # Include dependencies.
-  include_recipe %w{mysql mysql::server openssl}
+  include_recipe %w{mysql mysql::server openssl whenever}
 
   class Chef::Recipe
     include Opscode::OpenSSL::Password
@@ -121,10 +121,41 @@ define :mblwhoi_drupal_app do
   end
 
   # Create hourly cron job to run drush cron as the app owner.
-  cron "drupal cron for #{app_dir}" do
+  whenever_job "drush whenever_job for #{app_name}" do
+    description "Run Drupal cron jobs hourly via drush."
+    every "hour"
     command "cd #{app_dir}/current/drupal_root; drush cron"
-    minute "0"
     user app_owner
+  end
+
+  # Create daily backup job.
+  backup_job "daily backup for #{app_name}" do
+    
+  end
+
+  # Define backup tasks.
+  file_tasks = {
+    "drupal_files" => {
+      "includes" => ["#{app_dir}/shared"],
+      "excludes" => []
+    }
+  }
+
+  db_tasks = {
+    "#{db_name}" => {
+      "name" => "#{db_name}",
+      "type" => "MySQL"
+    }
+  }
+
+  # Create daily backup.
+  backup_job "#{app_name}_daily" do
+    description "Daily backup for #{app_name}, set in mblwhoi_drupal_app definition"
+    file_tasks file_tasks
+    database_tasks db_tasks
+    destinations "default"
+    frequency ["daily"]
+    action :create
   end
 
 end
