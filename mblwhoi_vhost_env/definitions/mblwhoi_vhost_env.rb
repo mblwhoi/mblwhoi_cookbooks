@@ -18,7 +18,11 @@ define :mblwhoi_vhost_env do
   # Optional parameters.
   docroot_dir = params[:docroot_dir] || "#{root_dir}/htdocs"
   apps_dir = params[:apps_dir] || "#{root_dir}/apps"
-  use_default_apache_config = ! params[:use_default_apache_config].nil? ? params[:use_default_apache_config] : true
+  if params[:use_default_apache_config].nil?
+    use_default_apache_config = true
+  else
+    use_default_apache_config = params[:use_default_apache_config]
+  end
   server_aliases = params[:server_aliases] || [server_name]
   drupal_apps = params[:drupal_apps] || []
 
