@@ -12,7 +12,7 @@ define :mblwhoi_drupal_app do
     include Opscode::OpenSSL::Password
   end
 
-  gem_pacakge "mysql" do
+  gem_package "mysql" do
     action :install
   end
 
