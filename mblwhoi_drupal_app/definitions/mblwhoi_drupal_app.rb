@@ -12,6 +12,10 @@ define :mblwhoi_drupal_app do
     include Opscode::OpenSSL::Password
   end
 
+  gem_pacakge "mysql" do
+    action :install
+  end
+
   Gem.clear_paths
   require 'mysql'
   
