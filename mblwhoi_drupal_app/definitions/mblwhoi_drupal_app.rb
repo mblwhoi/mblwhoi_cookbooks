@@ -6,19 +6,12 @@
 define :mblwhoi_drupal_app do
 
   # Include dependencies.
-  include_recipe %w{mysql mysql::server openssl whenever}
+  include_recipe %w{mysql mysql::server openssl whenever backup}
 
   class Chef::Recipe
     include Opscode::OpenSSL::Password
   end
 
-  gem_package "mysql" do
-    action :install
-  end
-
-  Gem.clear_paths
-  require 'mysql'
-  
   # Params.  We list them here to make them explicit
   # and to make shortcut handles.
   app_name = params[:app_name] || params[:name]
@@ -118,10 +111,7 @@ define :mblwhoi_drupal_app do
     command "/usr/bin/mysqladmin -u root -p#{node[:mysql][:server_root_password]} create #{db_name}"
     notifies :run, resources(:execute => "mysql-install-drupal-privileges")
     notifies :create, resources(:template => "create settings.php")
-    not_if do
-      m = Mysql.new("localhost", "root", node[:mysql][:server_root_password])
-      m.list_dbs.include?("#{db_name}") # Note: have to convert symbol to string for proper comparison here.
-    end
+    not_if "/usr/bin/mysql -u root -p#{node[:mysql][:server_root_password]} --batch --skip-column-names -e \"SHOW DATABASES LIKE '#{db_name}';\"| grep -q #{db_name}"
   end
 
   # Create hourly cron job to run drush cron as the app owner.
